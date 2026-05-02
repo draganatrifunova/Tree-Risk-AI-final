@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #1f2937;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow p-4;
+}
