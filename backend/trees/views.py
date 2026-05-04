@@ -1,4 +1,6 @@
 from rest_framework import permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from users.permissions import IsAdminRole
 
@@ -14,3 +16,24 @@ class TreeViewSet(viewsets.ModelViewSet):
         if self.action in ["create", "destroy"]:
             return [permissions.IsAuthenticated(), IsAdminRole()]
         return [permissions.IsAuthenticated()]
+
+    def perform_create(self, serializer):
+        tree = serializer.save()
+
+        # НЕ го пресметуваме пак score → AI веќе го дал
+        if tree.risk_score > 70:
+            tree.risk_category = "HIGH"
+            tree.is_dangerous = True
+        elif tree.risk_score > 40:
+            tree.risk_category = "MEDIUM"
+        else:
+            tree.risk_category = "LOW"
+
+        tree.save()
+
+    # 🔥 HIGH RISK ENDPOINT
+    @action(detail=False, methods=["get"])
+    def high_risk(self, request):
+        trees = Tree.objects.filter(risk_category="HIGH")
+        serializer = self.get_serializer(trees, many=True)
+        return Response(serializer.data)

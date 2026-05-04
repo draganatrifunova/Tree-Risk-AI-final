@@ -19,11 +19,20 @@ class Tree(models.Model):
     height = models.FloatField()
     tilt = models.FloatField()
     health_condition = models.CharField(max_length=16, choices=HealthCondition.choices)
+
     image = models.ImageField(upload_to="trees/", blank=True, null=True)
+
+    # AI резултати
     risk_score = models.FloatField(default=0)
     risk_category = models.CharField(
-        max_length=16, choices=RiskCategory.choices, default=RiskCategory.LOW
+        max_length=16,
+        choices=RiskCategory.choices,
+        default=RiskCategory.LOW
     )
+
+    ai_description = models.TextField(blank=True, null=True)
+    is_dangerous = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):

@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Dragana Trifunova\Desktop\IKT_Proekt\backend\venv"
+VIRTUAL_ENV="C:\Users\Jana\Desktop\temporary_ikt_repo\backend\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

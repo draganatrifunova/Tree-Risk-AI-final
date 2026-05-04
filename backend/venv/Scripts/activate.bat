@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\Dragana Trifunova\Desktop\IKT_Proekt\backend\venv
+set VIRTUAL_ENV=C:\Users\Jana\Desktop\temporary_ikt_repo\backend\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
