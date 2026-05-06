@@ -58,6 +58,30 @@ class TreeSerializer(serializers.ModelSerializer):
                 validated_data["ai_description"] = "AI analysis failed."
                 validated_data["is_dangerous"] = False
 
+        if not validated_data.get("risk_score"):
+            height = float(validated_data.get("height", 0))
+            tilt = float(validated_data.get("tilt", 0))
+            health = validated_data.get("health_condition", "GOOD")
+
+            health_factor = {
+                "GOOD": 0,
+                "FAIR": 20,
+                "POOR": 40,
+            }.get(health, 0)
+
+            score = min(100, round((height * 0.8) + (tilt * 0.9) + health_factor))
+
+            validated_data["risk_score"] = score
+
+            if score <= 33:
+                validated_data["risk_category"] = "LOW"
+            elif score <= 66:
+                validated_data["risk_category"] = "MEDIUM"
+            else:
+                validated_data["risk_category"] = "HIGH"
+
+            validated_data["is_dangerous"] = score >= 67
+
         return super().create(validated_data)
 
     def _compress_image(self, image):

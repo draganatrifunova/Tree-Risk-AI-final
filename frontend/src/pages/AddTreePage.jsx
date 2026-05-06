@@ -1,7 +1,9 @@
 import {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export default function AddTreePage() {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         species: "",
         latitude: "",
@@ -17,6 +19,7 @@ export default function AddTreePage() {
         try {
             await api.post("/trees/", form);
             alert("Tree created.");
+            navigate("/");
         } catch (err) {
             console.log(err.response?.data);
         }
