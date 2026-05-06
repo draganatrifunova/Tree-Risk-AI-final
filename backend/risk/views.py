@@ -3,11 +3,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from trees.models import Tree
-from weather.models import Weather
+from weather.services import OpenWeatherService
 
 from .models import RiskHistory
 from .serializers import RiskHistorySerializer
-from .services import ml_score, score_to_category
+from .services import hybrid_risk_score, score_breakdown, score_to_category
 
 
 class RiskCalculateView(APIView):
@@ -20,20 +20,27 @@ class RiskCalculateView(APIView):
         except Tree.DoesNotExist:
             return Response({"detail": "Tree not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        weather = Weather.objects.order_by("-date").first()
-        if not weather:
-            return Response({"detail": "Weather data is required."}, status=status.HTTP_400_BAD_REQUEST)
+        snapshot = OpenWeatherService().create_snapshot(tree)
 
         old_score = tree.risk_score
-        new_score = ml_score(
-            tree.height, tree.tilt, tree.health_condition, weather.wind_speed, weather.precipitation
-        )
+        new_score = hybrid_risk_score(tree, snapshot)
+        new_category = score_to_category(new_score)
+
         tree.risk_score = new_score
-        tree.risk_category = score_to_category(new_score)
-        tree.save(update_fields=["risk_score", "risk_category"])
+        tree.risk_category = new_category
+        tree.is_dangerous = new_score > 65
+        tree.save(update_fields=["risk_score", "risk_category", "is_dangerous"])
 
         RiskHistory.objects.create(tree=tree, old_score=old_score, new_score=new_score)
-        return Response({"tree_id": tree.id, "risk_score": new_score, "risk_category": tree.risk_category})
+
+        return Response({
+            "tree_id": tree.id,
+            "risk_score": new_score,
+            "risk_category": new_category,
+            "weather_snapshot_id": snapshot.id,
+            "weather_source": snapshot.source,
+            "score_breakdown": score_breakdown(tree, snapshot),
+        })
 
 
 class RiskHistoryListView(generics.ListAPIView):

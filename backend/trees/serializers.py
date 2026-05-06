@@ -16,7 +16,7 @@ class TreeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tree
         fields = "__all__"
-        read_only_fields = ("risk_score", "risk_category", "created_at")
+        read_only_fields = ("risk_score", "risk_category", "ai_vision_score", "created_at")
 
     def validate(self, attrs):
         for field in ("height", "tilt"):
@@ -40,6 +40,7 @@ class TreeSerializer(serializers.ModelSerializer):
                 print("AI RESPONSE:", score)
 
                 validated_data["risk_score"] = score
+                validated_data["ai_vision_score"] = score
 
                 if score > 70:
                     validated_data["risk_category"] = "HIGH"

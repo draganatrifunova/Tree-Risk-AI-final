@@ -31,6 +31,7 @@ class Tree(models.Model):
     )
 
     ai_description = models.TextField(blank=True, null=True)
+    ai_vision_score = models.FloatField(null=True, blank=True)
     is_dangerous = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
