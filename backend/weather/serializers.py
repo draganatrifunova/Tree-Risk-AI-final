@@ -8,7 +8,12 @@ class WeatherSerializer(serializers.ModelSerializer):
         model = Weather
         fields = "__all__"
 
-    def validate(self, attrs):
-        if attrs.get("wind_speed", 0) < 0 or attrs.get("precipitation", 0) < 0:
-            raise serializers.ValidationError("Weather values cannot be negative.")
-        return attrs
+    def validate_wind_speed(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Wind speed cannot be negative.")
+        return value
+
+    def validate_precipitation(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Precipitation cannot be negative.")
+        return value
