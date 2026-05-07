@@ -137,3 +137,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # OPENAI (ВАЖНО)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://tree-risk-ai-final-production.up.railway.app",
+]
