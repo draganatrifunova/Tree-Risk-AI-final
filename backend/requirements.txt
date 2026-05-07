@@ -10,3 +10,4 @@ scikit-learn
 reportlab
 gunicorn
 whitenoise
+openai==1.30.0
