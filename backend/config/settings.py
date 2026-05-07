@@ -141,3 +141,6 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 CSRF_TRUSTED_ORIGINS = [
     "https://tree-risk-ai-final-production.up.railway.app",
 ]
+
+# OPENWEATHER
+OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
