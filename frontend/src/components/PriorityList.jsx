@@ -35,7 +35,7 @@ export default function PriorityList({ trees = [] }) {
               <th className="text-left py-2">ID</th>
               <th className="text-left py-2">Вид</th>
               <th className="text-left py-2">Здравствена состојба</th>
-              <th className="text-left py-2">RiskScore</th>
+              <th className="text-left py-2">Оцена на ризик</th>
               <th className="text-left py-2">Препорака</th>
               <th className="text-left py-2">Детали</th>
             </tr>
