@@ -19,9 +19,14 @@ api.interceptors.response.use(
       original._retry = true;
 
       const refresh = localStorage.getItem("refresh");
+      const publicRoutes = ["/", "/map"];
       if (!refresh) {
         localStorage.clear();
-        window.location.href = "/login";
+
+        if (!publicRoutes.includes(window.location.pathname)) {
+          window.location.href = "/login";
+        }
+
         return Promise.reject(error);
       }
 
