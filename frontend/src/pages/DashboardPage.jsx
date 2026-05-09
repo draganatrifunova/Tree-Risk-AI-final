@@ -56,9 +56,9 @@ export default function DashboardPage() {
     const avgRisk =
       trees.length > 0
         ? Math.round(
-            trees.reduce((sum, t) => sum + Number(t.risk_score || 0), 0) /
-              trees.length
-          )
+          trees.reduce((sum, t) => sum + Number(t.risk_score || 0), 0) /
+          trees.length
+        )
         : 0;
 
     const dangerous = trees.filter((t) => t.is_dangerous).length;
@@ -67,9 +67,9 @@ export default function DashboardPage() {
     const avgVision =
       visionTrees.length > 0
         ? (
-            visionTrees.reduce((s, t) => s + t.ai_vision_score, 0) /
-            visionTrees.length
-          ).toFixed(1)
+          visionTrees.reduce((s, t) => s + t.ai_vision_score, 0) /
+          visionTrees.length
+        ).toFixed(1)
         : null;
 
     return { low, medium, high, avgRisk, dangerous, avgVision, visionTrees };
@@ -114,12 +114,12 @@ export default function DashboardPage() {
 
       {/* STATS CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-       <div className="card flex items-center justify-between">
-           <div>
-             <p className="text-sm text-gray-500">Вкупно дрва</p>
-          <h3 className="text-2xl font-bold">{trees.length}</h3>
-           </div>
-           <div className="bg-[#dbeafe] p-2 rounded-md flex items-center justify-center">
+        <div className="card flex items-center justify-between">
+          <div>
+            <p className="text-sm text-gray-500">Вкупно дрва</p>
+            <h3 className="text-2xl font-bold">{trees.length}</h3>
+          </div>
+          <div className="bg-[#dbeafe] p-2 rounded-md flex items-center justify-center">
             <img src={treeBlue} alt="Total trees" className="w-5 h-5" />
           </div>
         </div>
@@ -132,28 +132,28 @@ export default function DashboardPage() {
           <div className="bg-[#ffe2e2] p-2 rounded-md flex items-center justify-center">
             <img src={infoRed} alt="High Risk" className="w-5 h-5" />
           </div>
-      </div>
+        </div>
 
-         <div className="card flex items-center justify-between">
+        <div className="card flex items-center justify-between">
           <div><p className="text-sm text-gray-500">Просечен ризик</p>
-          <h3 className="text-2xl font-bold text-yellow-500">
-            {stats.average}
-          </h3>
+            <h3 className="text-2xl font-bold text-yellow-500">
+              {stats.avgRisk}
+            </h3>
           </div>
-            <div className="bg-[#fef9c2] p-2 rounded-md flex items-center justify-center">
+          <div className="bg-[#fef9c2] p-2 rounded-md flex items-center justify-center">
             <img src={risk} alt="Average Risk" className="w-5 h-5" />
           </div>
         </div>
 
         <div className="card flex items-center justify-between">
           <div>
-              <p className="text-sm text-gray-500">Активни известувања</p>
-          <h3 className="text-2xl font-bold text-orange-500">{stats.high}</h3>
+            <p className="text-sm text-gray-500">Активни известувања</p>
+            <h3 className="text-2xl font-bold text-orange-500">{stats.high}</h3>
           </div>
-            <div className="bg-[#ffedd4] p-2 rounded-md flex items-center justify-center">
+          <div className="bg-[#ffedd4] p-2 rounded-md flex items-center justify-center">
             <img src={wind} alt="Active notifications" className="w-5 h-5" />
           </div>
-        
+
         </div>
       </div>
 
