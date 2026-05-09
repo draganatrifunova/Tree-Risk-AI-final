@@ -27,10 +27,10 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<Protected><DashboardPage /></Protected>} />
+        <Route path="/" element={<DashboardPage />} />
         <Route path="/trees" element={<Protected><TreeListPage /></Protected>} />
         <Route path="/trees/new" element={<Protected><AddTreePage /></Protected>} />
-        <Route path="/map" element={<Protected><MapViewPage /></Protected>} />
+        <Route path="/map" element={<MapViewPage />} />
         <Route path="/weather" element={<Protected><WeatherPage /></Protected>} />
         <Route path="/risk-history" element={<Protected><RiskHistoryPage /></Protected>} />
         <Route path="/reports" element={<Protected><ReportsPage /></Protected>} />
