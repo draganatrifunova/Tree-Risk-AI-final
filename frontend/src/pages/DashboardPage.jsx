@@ -167,6 +167,7 @@ export default function DashboardPage() {
                     <div>
                         <p className="text-sm text-gray-500">Активни известувања</p>
                         <h3 className="text-2xl font-bold text-orange-500">{stats.high}</h3>
+                        <p className="text-xs text-gray-400">дрва со висок ризик</p>
                     </div>
                     <div className="bg-[#ffedd4] p-2 rounded-md flex items-center justify-center">
                         <img src={wind} alt="Active notifications" className="w-5 h-5"/>
@@ -268,6 +269,42 @@ export default function DashboardPage() {
                     </div>
                 )}
             </div>
+
+            {/* ALERTS */}
+            {stats.high > 0 && (
+                <div className="card border border-red-100">
+                    <div className="flex items-center gap-2 mb-3">
+                        <img src={infoRed} className="w-5 h-5" alt="alerts"/>
+                        <h3 className="font-semibold text-red-600">Активни известувања — Висок ризик</h3>
+                        <span className="ml-auto text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
+                            {stats.high} дрво{stats.high !== 1 ? "а" : ""}
+                        </span>
+                    </div>
+                    <div className="space-y-2">
+                        {trees
+                            .filter((t) => t.risk_category === "HIGH")
+                            .sort((a, b) => Number(b.risk_score) - Number(a.risk_score))
+                            .map((t) => (
+                                <div key={t.id} className="flex items-center justify-between bg-red-50 rounded-lg px-4 py-2.5">
+                                    <div>
+                                        <p className="text-sm font-semibold text-gray-800">
+                                            #{t.id} · {t.species}
+                                            {t.is_dangerous && (
+                                                <span className="ml-2 text-xs text-red-500 font-bold">⚠ Опасно</span>
+                                            )}
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                            {Number(t.latitude).toFixed(4)}, {Number(t.longitude).toFixed(4)} · Наклон {t.tilt}° · {t.health_condition}
+                                        </p>
+                                    </div>
+                                    <span className="text-sm font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full whitespace-nowrap">
+                                        {Math.round(t.risk_score)} / 100
+                                    </span>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            )}
 
             {/* PRIORITY LIST */}
             <PriorityList trees={priorityTrees}/>

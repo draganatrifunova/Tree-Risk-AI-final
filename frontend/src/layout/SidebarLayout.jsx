@@ -9,12 +9,14 @@ import weather from "../assets/images/weather-rain.svg";
 import report from "../assets/images/report.svg";
 import map from "../assets/images/map.svg";
 import riskHistory from "../assets/images/risk-history.svg";
+import infoTriangle from "../assets/images/info-triangle.svg";
 
 
 const items = [
     {label: "Контролна табела", href: "/", icon: dashboard, public: true},
-    {label: "Листа на дрва", href: "/trees", icon: list},
+    {label: "Листа на дрва", href: "/trees", icon: list, public: true},
     {label: "Додади дрво", href: "/trees/new", icon: plus},
+    {label: "Пријави дрво", href: "/report-tree", icon: infoTriangle},
     {label: "Преглед на мапа", href: "/map", icon: map, public: true},
     {label: "Временски услови", href: "/weather", icon: weather},
     { label: "Историја на ризик", href: "/risk-history", icon: riskHistory },

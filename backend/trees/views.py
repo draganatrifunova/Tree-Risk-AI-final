@@ -4,8 +4,8 @@ from rest_framework.response import Response
 
 from users.permissions import IsAdminRole
 
-from .models import Tree
-from .serializers import TreeSerializer
+from .models import Tree, TreeReport
+from .serializers import TreeSerializer, TreeReportSerializer
 
 
 class TreeViewSet(viewsets.ModelViewSet):
@@ -37,3 +37,19 @@ class TreeViewSet(viewsets.ModelViewSet):
         trees = Tree.objects.filter(risk_category="HIGH")
         serializer = self.get_serializer(trees, many=True)
         return Response(serializer.data)
+
+
+class TreeReportViewSet(viewsets.ModelViewSet):
+    serializer_class = TreeReportSerializer
+    http_method_names = ["get", "post", "head", "options"]
+
+    def get_queryset(self):
+        if IsAdminRole().has_permission(self.request, self):
+            return TreeReport.objects.all().order_by("-created_at")
+        return TreeReport.objects.filter(reported_by=self.request.user).order_by("-created_at")
+
+    def get_permissions(self):
+        return [permissions.IsAuthenticated()]
+
+    def perform_create(self, serializer):
+        serializer.save(reported_by=self.request.user)

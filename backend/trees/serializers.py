@@ -7,7 +7,7 @@ from PIL import Image
 from rest_framework import serializers
 from openai import OpenAI
 
-from .models import Tree
+from .models import Tree, TreeReport
 
 
 class TreeSerializer(serializers.ModelSerializer):
@@ -153,3 +153,12 @@ class TreeSerializer(serializers.ModelSerializer):
             self._ai_description = "AI parsing failed."
 
         return score
+
+
+class TreeReportSerializer(serializers.ModelSerializer):
+    reported_by = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = TreeReport
+        fields = "__all__"
+        read_only_fields = ("reported_by", "status", "created_at")

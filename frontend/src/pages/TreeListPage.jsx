@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import api from "../services/api";
 
 /* ── Constants ── */
@@ -56,6 +56,14 @@ function IconX() {
     return (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    );
+}
+
+function IconFlag() {
+    return (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21V4m0 0l6-1 6 1 6-1v13l-6 1-6-1-6 1V4z"/>
         </svg>
     );
 }
@@ -287,6 +295,9 @@ export default function TreeListPage() {
     const [sortBy, setSortBy] = useState("RISK_DESC");
     const [activeTab, setActiveTab] = useState("first"); // "first" | "second"
 
+    const isAuthenticated = !!localStorage.getItem("access");
+    const navigate = useNavigate();
+
     // Nela modals
     const [viewTree, setViewTree] = useState(null);
     const [editTree, setEditTree] = useState(null);
@@ -370,9 +381,18 @@ export default function TreeListPage() {
                     <h2 className="text-2xl font-bold">Листа на дрва</h2>
                     <p className="text-sm text-gray-500">Преглед и управување со сите дрва во системот</p>
                 </div>
-                <Link to="/trees/new" className="bg-black text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800">
-                    + Додади дрво
-                </Link>
+                <div className="flex gap-2">
+                    {isAuthenticated && (
+                        <Link to="/report-tree" className="border border-orange-400 text-orange-600 px-4 py-2 rounded-lg text-sm hover:bg-orange-50">
+                            ⚑ Пријави дрво
+                        </Link>
+                    )}
+                    {isAuthenticated && (
+                        <Link to="/trees/new" className="bg-black text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800">
+                            + Додади дрво
+                        </Link>
+                    )}
+                </div>
             </div>
 
             {/* Filters (Nela) */}
@@ -484,20 +504,33 @@ export default function TreeListPage() {
                                             >
                                                 <IconEye/>
                                             </button>
-                                            <button
-                                                onClick={() => setEditTree(tree)}
-                                                className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-green-50 transition-colors"
-                                                title="Уреди"
-                                            >
-                                                <IconEdit/>
-                                            </button>
-                                            <button
-                                                onClick={() => setDeleteTree(tree)}
-                                                className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-danger hover:bg-red-50 transition-colors"
-                                                title="Избриши"
-                                            >
-                                                <IconTrash/>
-                                            </button>
+                                            {isAuthenticated && (
+                                                <button
+                                                    onClick={() => navigate(`/report-tree?treeId=${tree.id}`)}
+                                                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-orange-500 hover:bg-orange-50 transition-colors"
+                                                    title="Пријави дрво"
+                                                >
+                                                    <IconFlag/>
+                                                </button>
+                                            )}
+                                            {isAuthenticated && (
+                                                <button
+                                                    onClick={() => setEditTree(tree)}
+                                                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-green-50 transition-colors"
+                                                    title="Уреди"
+                                                >
+                                                    <IconEdit/>
+                                                </button>
+                                            )}
+                                            {isAuthenticated && (
+                                                <button
+                                                    onClick={() => setDeleteTree(tree)}
+                                                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-danger hover:bg-red-50 transition-colors"
+                                                    title="Избриши"
+                                                >
+                                                    <IconTrash/>
+                                                </button>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>

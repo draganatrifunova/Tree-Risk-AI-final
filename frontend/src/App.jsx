@@ -9,6 +9,7 @@ import MapViewPage from "./pages/MapViewPage";
 import WeatherPage from "./pages/WeatherPage";
 import ReportsPage from "./pages/ReportsPage";
 import RiskHistoryPage from "./pages/RiskHistoryPage";
+import ReportTreePage from "./pages/ReportTreePage";
 
 function Protected({ children }) {
   if (!localStorage.getItem("access")) return <Navigate to="/login" replace />;
@@ -28,12 +29,13 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<DashboardPage />} />
-        <Route path="/trees" element={<Protected><TreeListPage /></Protected>} />
+        <Route path="/trees" element={<TreeListPage />} />
         <Route path="/trees/new" element={<Protected><AddTreePage /></Protected>} />
         <Route path="/map" element={<MapViewPage />} />
         <Route path="/weather" element={<Protected><WeatherPage /></Protected>} />
         <Route path="/risk-history" element={<Protected><RiskHistoryPage /></Protected>} />
         <Route path="/reports" element={<Protected><ReportsPage /></Protected>} />
+        <Route path="/report-tree" element={<Protected><ReportTreePage /></Protected>} />
       </Routes>
     </Shell>
   );
