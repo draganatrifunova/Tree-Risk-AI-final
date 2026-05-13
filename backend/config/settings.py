@@ -80,11 +80,14 @@ ASGI_APPLICATION = "config.asgi.application"
 
 # DATABASE
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5431/railway"),
-        conn_max_age=600,
-        ssl_require=False,
-    )
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "railway",
+        "USER": "postgres",
+        "PASSWORD": "MSvEVbWEekGExMyHzHyInXknxFwRUsck",
+        "HOST": "postgres.railway.internal",
+        "PORT": "5432",
+    }
 }
 
 
