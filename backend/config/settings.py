@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-import dj_database_url
+
+import urllib.parse
 
 
 
@@ -79,16 +80,32 @@ ASGI_APPLICATION = "config.asgi.application"
 # DATABASE (POSTGRES - DOCKER)
 
 # DATABASE
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "railway",
-        "USER": "postgres",
-        "PASSWORD": "MSvEVbWEekGExMyHzHyInXknxFwRUsck",
-        "HOST": "postgres.railway.internal",
-        "PORT": "5432",
+
+DATABASE_URL = os.getenv("DATABASE_URL", "")
+
+if DATABASE_URL:
+    url = urllib.parse.urlparse(DATABASE_URL)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path[1:],
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": url.port or 5432,
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "railway",
+            "USER": "postgres",
+            "PASSWORD": "postgres",
+            "HOST": "localhost",
+            "PORT": "5431",
+        }
+    }
 
 
 # CUSTOM USER
